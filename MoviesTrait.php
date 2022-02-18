@@ -2,7 +2,7 @@
 
 trait MoviesTrait
 {
-
+    private $defaultType = 'movies';
     private $streamContext;
 
     private $moviesBase = "https://vidembed.me/";
@@ -17,6 +17,21 @@ trait MoviesTrait
 	if($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 	    return $this->jsonResponse([]);
 	}
+    }
+
+    public function processMoviesList() {
+        $page = $_GET['page'] ?? 1;
+
+        // fetch movies
+        $movies = $this->fetchMovies($this->type ?? $this->defaultType, $page);
+
+        $output = array(
+            'success' => true,
+            'data' => $movies,
+            'pagination' => array('current_page' => (int) $page)
+        );
+
+        return $this->jsonResponse($output);
     }
 
     public function fetchMovies(string $type = 'movies', int $page = 1): array
@@ -70,7 +85,14 @@ trait MoviesTrait
 
 	if(empty($source)) return [];
 
-	$details = [];
+	$details = [
+	    'title' => '',
+	    'stream_link' => '',
+	    'synopsis' => '',
+	    'episodes' => [],
+	    'latest_releases' => []
+	];
+
         $dom = new DOMDocument();
 	// get stream link
         $movie = explode('<iframe src="//', $source);
@@ -88,10 +110,24 @@ trait MoviesTrait
         $movie = explode('</div>', $movie[1]);
         $movieTitle = trim($movie[0]);
 
+	// get episodes
+        $movie = explode('<h3 class="list_episdoe">List episode</h3>', $source);
+	$movie = explode('<ul class="listing items lists">', $movie[1]);
+        $movie = explode('</ul>', $movie[1]);
+        $movieEpisodes = $this->extractMovies('<ul class="listing items">' . trim($movie[0]). '</ul>');
+
+	// get latest
+        $movie = explode('<ul class="listing items videos">', $source);
+        $movie = explode('</ul>', $movie[1]);
+        $movieLatestReleases = $this->extractMovies('<ul class="listing items">' . trim($movie[0]). '</ul>');
+
         if(!empty($moviePlayLink)) {
 	    $details['title'] = $movieTitle;
             $details['stream_link'] = "https://" . $moviePlayLink;
             $details['synopsis'] = $movieSynopsis;
+	    //if(!empty($movieEpisodes) && count($movieEpisodes) > 1)
+	    $details['episodes'] = $movieEpisodes;
+	    $details['latest_releases'] = $movieLatestReleases;
         }
 
 	return $details;
