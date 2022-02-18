@@ -12,7 +12,7 @@ final class CinemaMovies
     public function process() {
 
         $filters = $params = [];
-	$page = $_GET['page'] ?? 1;
+	$page = $_POST['page'] ?? $_GET['page'] ?? 1;
 
         // fetch movies
         $movies = $this->fetchMovies($this->type, $page);

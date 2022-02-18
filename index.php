@@ -14,9 +14,9 @@ final class Index {
 	    'author' => 'Chikezie',
 	    'endpoints' => array(
 		'/movies.php' => array(
-		    'method' => 'GET',
+		    'method' => 'GET|POST',
 		    'description' => 'Fetch list of Movies.',
-		    'queryString' => array(
+		    'parameters' => array(
 			'page' => array(
 			    'type' => 'integer',
 			    'description' => 'Page number to be retrieved.',
@@ -25,9 +25,9 @@ final class Index {
 		    )
 		),
 		'/cinema-movies.php' => array(
-                    'method' => 'GET',
+                    'method' => 'GET|POST',
                     'description' => 'Fetch list of Cinema Movies.',
-                    'queryString' => array(
+                    'parameters' => array(
                         'page' => array(
                             'type' => 'integer',
                             'description' => 'Page number to be retrieved',
@@ -36,9 +36,9 @@ final class Index {
                     )
                 ),
 		'/movie.php' => array(
-                    'method' => 'GET',
+                    'method' => 'GET|POST',
                     'description' => 'Get the full details of a single movie, including streaming link.',
-                    'queryString' => array(
+                    'parameters' => array(
                         'slug' => array(
                             'type' => 'string',
                             'description' => 'The slug of the video to be loaded.',
@@ -47,9 +47,9 @@ final class Index {
                     )
                 ),
 		'/search.php' => array(
-                    'method' => 'GET',
+                    'method' => 'GET|POST',
                     'description' => 'Find movies by entering keyword(s).',
-                    'queryString' => array(
+                    'parameters' => array(
                         'keyword' => array(
                             'type' => 'string',
                             'description' => 'Search keywords to be used in the search.',
