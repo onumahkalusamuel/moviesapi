@@ -46,6 +46,22 @@ final class Index {
                         )
                     )
                 ),
+		'/search.php' => array(
+                    'method' => 'GET',
+                    'description' => 'Find movies by entering keyword(s).',
+                    'queryString' => array(
+                        'keyword' => array(
+                            'type' => 'string',
+                            'description' => 'Search keywords to be used in the search.',
+                            'default' => null
+                        ),
+			'page' => array(
+                            'type' => 'integer',
+                            'description' => 'Page of search result to be fetched.',
+                            'default' => 1
+                        )
+                    )
+                ),
 	    )
 	);
 
