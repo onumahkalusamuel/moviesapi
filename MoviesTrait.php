@@ -10,17 +10,28 @@ trait MoviesTrait
 
     public function __construct()
     {
+	// prepare stream context for external calls
         $this->streamContext = stream_context_create(
             array('http' => array('timeout' => 3))
         );
 
+	// handle pre-flight requests
 	if($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 	    return $this->jsonResponse([]);
+	}
+
+	// handle json type POST requests
+	$input = file_get_contents("php://input");
+	if(json_decode($input, true) !== null) {
+	    $post = json_decode($input, true);
+	    foreach($post as $key => $value) {
+		$_POST[$key] = $_POST[$key] ?? $value;
+	    }
 	}
     }
 
     public function processMoviesList() {
-        $page = $_GET['page'] ?? 1;
+        $page = $_POST['page'] ?? $_GET['page'] ?? 1;
 
         // fetch movies
         $movies = $this->fetchMovies($this->type ?? $this->defaultType, $page);

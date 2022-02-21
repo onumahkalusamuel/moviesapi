@@ -11,8 +11,8 @@ final class Search
 
     public function process() {
 
-        $keyword = $_GET['keyword'] ?? '';
-	$page = $_GET['page'] ?? 1;
+        $keyword = $_POST['keyword'] = $_GET['keyword'] ?? '';
+	$page = $_POST['page'] ?? $_GET['page'] ?? 1;
 	$movies = [];
 
         // search
