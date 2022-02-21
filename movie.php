@@ -11,7 +11,7 @@ final class Movie
 
     public function process() {
 
-	$slug = $_GET['slug'] ?? null;
+	$slug = $_POST['slug'] ?? $_GET['slug'] ?? null;
 
 	if(!empty($slug)) $movie = $this->fetchDetails($slug);
 
