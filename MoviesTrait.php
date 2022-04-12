@@ -5,8 +5,8 @@ trait MoviesTrait
     private $defaultType = 'movies';
     private $streamContext;
 
-    private $moviesBase = "https://vidembed.me/";
-    private $moviesUrl = "https://vidembed.me/%s?page=%s";
+    private $moviesBase = "https://membed.net/";
+    private $moviesUrl = "https://membed.net/%s?page=%s";
 
     public function __construct()
     {
